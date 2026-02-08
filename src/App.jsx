@@ -139,6 +139,13 @@ export default function App() {
     const [theme, setTheme] = useState('grey');
     const [isThemeOpen, setIsThemeOpen] = useState(false);
     const intervalRef = useRef(null);
+    const resumeTimeoutRef = useRef(null);
+
+    const clearResumeTimeout = () => {
+        if (resumeTimeoutRef.current) {
+            clearTimeout(resumeTimeoutRef.current);
+        }
+    };
 
     const currentTheme = themes[theme];
 
@@ -181,6 +188,7 @@ export default function App() {
             if (intervalRef.current) {
                 clearInterval(intervalRef.current);
             }
+            clearResumeTimeout();
         };
     }, [isPlaying, wpm, currentIndex, words.length]);
 
@@ -190,13 +198,27 @@ export default function App() {
     };
 
     const goBack = () => {
-        setCurrentIndex(prev => Math.max(0, prev - 10));
+        if (words.length === 0) return;
+        clearResumeTimeout();
+        const wasPlaying = isPlaying;
         setIsPlaying(false);
+        setCurrentIndex(prev => Math.max(0, prev - 10));
+
+        resumeTimeoutRef.current = setTimeout(() => {
+            if (wasPlaying) setIsPlaying(true);
+        }, 500);
     };
 
     const goForward = () => {
-        setCurrentIndex(prev => Math.min(words.length - 1, prev + 10));
+        if (words.length === 0) return;
+        clearResumeTimeout();
+        const wasPlaying = isPlaying;
         setIsPlaying(false);
+        setCurrentIndex(prev => Math.min(words.length - 1, prev + 10));
+
+        resumeTimeoutRef.current = setTimeout(() => {
+            if (wasPlaying) setIsPlaying(true);
+        }, 500);
     };
 
     const resetReading = () => {
@@ -216,9 +238,12 @@ export default function App() {
     };
 
     const handleSeekEnd = () => {
-        if (wasPlayingBeforeSeek.current) {
-            setIsPlaying(true);
-        }
+        clearResumeTimeout();
+        resumeTimeoutRef.current = setTimeout(() => {
+            if (wasPlayingBeforeSeek.current) {
+                setIsPlaying(true);
+            }
+        }, 500);
     };
 
     const handleProgressChange = (e) => {
