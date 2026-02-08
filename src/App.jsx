@@ -256,47 +256,38 @@ export default function App() {
 
             {/* Main Content Area - Everything Centered */}
             <main className="flex-1 flex flex-col items-center justify-center p-6 space-y-12">
-                {!fileName ? (
-                    <FileUpload
-                        fileName={fileName}
+                <div className="w-full flex flex-col items-center gap-10">
+                    {/* Word Display - Top */}
+                    <WordDisplay
+                        word={words[currentIndex]}
                         currentTheme={currentTheme}
-                        handleFileUpload={handleFileUpload}
-                        compact={false}
+                        disabled={words.length === 0}
                     />
-                ) : (
-                    <div className="w-full flex flex-col items-center gap-10">
-                        {/* Word Display - Top */}
-                        <WordDisplay
-                            word={words[currentIndex]}
-                            currentTheme={currentTheme}
-                        />
 
-                        {/* WPM & Controls - Middle/Bottom */}
-                        <Controls
-                            isPlaying={isPlaying}
-                            wpm={wpm}
-                            adjustWpm={adjustWpm}
-                            togglePlay={togglePlay}
-                            goBack={goBack}
-                            resetReading={resetReading}
-                            currentTheme={currentTheme}
-                            disabled={words.length === 0}
-                        />
+                    {/* WPM & Controls - Middle/Bottom */}
+                    <Controls
+                        isPlaying={isPlaying}
+                        wpm={wpm}
+                        adjustWpm={adjustWpm}
+                        togglePlay={togglePlay}
+                        goBack={goBack}
+                        resetReading={resetReading}
+                        currentTheme={currentTheme}
+                        disabled={words.length === 0}
+                    />
 
-                        {/* Progress Bar - Very Bottom */}
-                        {words.length > 0 && (
-                            <ProgressBar
-                                progress={progress}
-                                currentIndex={currentIndex}
-                                maxIndex={words.length - 1}
-                                handleProgressChange={handleProgressChange}
-                                handleSeekStart={handleSeekStart}
-                                handleSeekEnd={handleSeekEnd}
-                                currentTheme={currentTheme}
-                            />
-                        )}
-                    </div>
-                )}
+                    {/* Progress Bar - Very Bottom */}
+                    <ProgressBar
+                        progress={progress}
+                        currentIndex={currentIndex}
+                        maxIndex={Math.max(0, words.length - 1)}
+                        handleProgressChange={handleProgressChange}
+                        handleSeekStart={handleSeekStart}
+                        handleSeekEnd={handleSeekEnd}
+                        currentTheme={currentTheme}
+                        disabled={words.length === 0}
+                    />
+                </div>
             </main>
         </div>
     );

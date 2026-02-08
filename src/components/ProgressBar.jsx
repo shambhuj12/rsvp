@@ -1,8 +1,8 @@
 import React from 'react';
 
-const ProgressBar = ({ progress, currentIndex, maxIndex, handleProgressChange, handleSeekStart, handleSeekEnd, currentTheme }) => {
+const ProgressBar = ({ progress, currentIndex, maxIndex, handleProgressChange, handleSeekStart, handleSeekEnd, currentTheme, disabled }) => {
     return (
-        <div className="w-[30%] mx-auto relative px-2 py-4">
+        <div className={`w-[30%] mx-auto relative px-2 py-4 ${disabled ? 'opacity-20 pointer-events-none' : ''}`}>
             <div className="relative h-1 flex items-center group">
                 <div className={`absolute w-full h-1 ${currentTheme.progressBg} rounded-full overflow-hidden`}>
                     <div
@@ -20,6 +20,7 @@ const ProgressBar = ({ progress, currentIndex, maxIndex, handleProgressChange, h
                     onMouseUp={handleSeekEnd}
                     onTouchStart={handleSeekStart}
                     onTouchEnd={handleSeekEnd}
+                    disabled={disabled}
                     className="absolute w-full h-full bg-transparent appearance-none cursor-pointer z-10 opacity-0"
                 />
                 <div
