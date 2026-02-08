@@ -134,12 +134,22 @@ export default function App() {
     const [words, setWords] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
-    const [wpm, setWpm] = useState(300);
+    const [wpm, setWpm] = useState(200);
     const [fileName, setFileName] = useState('');
     const [theme, setTheme] = useState('grey');
     const [isThemeOpen, setIsThemeOpen] = useState(false);
     const intervalRef = useRef(null);
     const resumeTimeoutRef = useRef(null);
+
+    const introText = "RSVP stands for Rapid Serial Visual Presentation. It is a method of reading where words are displayed one by one in the same position. This helps you read faster by eliminating the time your eyes spend moving from word to word. Conventional reading is slower because your eyes have to scan the page. With RSVP, you can achieve much higher reading speeds. Upload a file to start your journey into faster reading! ";
+
+    useEffect(() => {
+        if (words.length === 0) {
+            const introWords = introText.split(/\s+/).filter(word => word.length > 0);
+            setWords(introWords);
+            setIsPlaying(true);
+        }
+    }, []);
 
     const clearResumeTimeout = () => {
         if (resumeTimeoutRef.current) {
@@ -172,6 +182,10 @@ export default function App() {
             intervalRef.current = setInterval(() => {
                 setCurrentIndex(prev => {
                     if (prev >= words.length - 1) {
+                        // Loop the intro text if no file is selected
+                        if (!fileName) {
+                            return 0;
+                        }
                         setIsPlaying(false);
                         return prev;
                     }
@@ -291,7 +305,7 @@ export default function App() {
                     <WordDisplay
                         word={words[currentIndex]}
                         currentTheme={currentTheme}
-                        disabled={words.length === 0}
+                        disabled={words.length === 0 && fileName}
                     />
 
                     {/* WPM & Controls - Middle */}
@@ -303,7 +317,8 @@ export default function App() {
                         goBack={goBack}
                         goForward={goForward}
                         currentTheme={currentTheme}
-                        disabled={words.length === 0}
+                        disabled={words.length === 0 && fileName}
+                        fileName={fileName}
                     />
 
                     {/* Progress Bar - Bottom */}
@@ -315,7 +330,7 @@ export default function App() {
                         handleSeekStart={handleSeekStart}
                         handleSeekEnd={handleSeekEnd}
                         currentTheme={currentTheme}
-                        disabled={words.length === 0}
+                        disabled={words.length === 0 && fileName}
                     />
                 </div>
             </main>

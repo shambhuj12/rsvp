@@ -9,16 +9,17 @@ const Controls = ({
     goBack,
     goForward,
     currentTheme,
-    disabled
+    disabled,
+    fileName
 }) => {
     return (
-        <div className={`flex flex-col items-center gap-6 w-full ${disabled ? 'opacity-30 pointer-events-none' : ''}`}>
+        <div className={`flex flex-col items-center gap-6 w-full ${disabled && fileName ? 'opacity-30 pointer-events-none' : ''}`}>
             {/* WPM Control - Top */}
             <div className="flex items-center gap-4">
                 <button
                     onClick={() => adjustWpm(-25)}
                     className={`p-1.5 rounded-lg ${currentTheme.button} transition-all active:scale-90`}
-                    disabled={disabled}
+                    disabled={disabled && fileName}
                 >
                     <Minus className={`w-3.5 h-3.5 ${currentTheme.buttonIcon}`} />
                 </button>
@@ -31,7 +32,7 @@ const Controls = ({
                 <button
                     onClick={() => adjustWpm(25)}
                     className={`p-1.5 rounded-lg ${currentTheme.button} transition-all active:scale-90`}
-                    disabled={disabled}
+                    disabled={disabled && fileName}
                 >
                     <Plus className={`w-3.5 h-3.5 ${currentTheme.buttonIcon}`} />
                 </button>
@@ -43,7 +44,7 @@ const Controls = ({
                     onClick={goBack}
                     className={`p-2 rounded-xl ${currentTheme.button} transition-all hover:scale-105 active:scale-95`}
                     title="Go back 10 words"
-                    disabled={disabled}
+                    disabled={disabled && fileName}
                 >
                     <ChevronLeft className={`w-5 h-5 ${currentTheme.buttonIcon}`} />
                 </button>
@@ -51,7 +52,7 @@ const Controls = ({
                 <button
                     onClick={togglePlay}
                     className={`p-4 rounded-2xl ${currentTheme.primary} transition-all hover:scale-105 active:scale-90 shadow-lg ${currentTheme.primaryShadow}`}
-                    disabled={disabled}
+                    disabled={disabled && fileName}
                 >
                     {isPlaying ? (
                         <Pause className="w-5 h-5 text-white" />
@@ -64,7 +65,7 @@ const Controls = ({
                     onClick={goForward}
                     className={`p-2 rounded-xl ${currentTheme.button} transition-all hover:scale-105 active:scale-95`}
                     title="Go forward 10 words"
-                    disabled={disabled}
+                    disabled={disabled && fileName}
                 >
                     <ChevronRight className={`w-5 h-5 ${currentTheme.buttonIcon}`} />
                 </button>
