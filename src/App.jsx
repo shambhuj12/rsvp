@@ -136,7 +136,7 @@ export default function App() {
     const [isPlaying, setIsPlaying] = useState(false);
     const [wpm, setWpm] = useState(300);
     const [fileName, setFileName] = useState('');
-    const [theme, setTheme] = useState('blue');
+    const [theme, setTheme] = useState('grey');
     const [isThemeOpen, setIsThemeOpen] = useState(false);
     const intervalRef = useRef(null);
 
