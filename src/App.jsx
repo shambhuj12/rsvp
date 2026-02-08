@@ -203,10 +203,22 @@ export default function App() {
         setWpm(prev => Math.max(100, Math.min(1000, prev + delta)));
     };
 
+    const wasPlayingBeforeSeek = useRef(false);
+
+    const handleSeekStart = () => {
+        wasPlayingBeforeSeek.current = isPlaying;
+        setIsPlaying(false);
+    };
+
+    const handleSeekEnd = () => {
+        if (wasPlayingBeforeSeek.current) {
+            setIsPlaying(true);
+        }
+    };
+
     const handleProgressChange = (e) => {
         const newIndex = parseInt(e.target.value);
         setCurrentIndex(newIndex);
-        setIsPlaying(false);
     };
 
     const progress = words.length > 0 ? (currentIndex / words.length) * 100 : 0;
@@ -278,6 +290,8 @@ export default function App() {
                                 currentIndex={currentIndex}
                                 maxIndex={words.length - 1}
                                 handleProgressChange={handleProgressChange}
+                                handleSeekStart={handleSeekStart}
+                                handleSeekEnd={handleSeekEnd}
                                 currentTheme={currentTheme}
                             />
                         )}
