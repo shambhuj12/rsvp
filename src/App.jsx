@@ -194,6 +194,11 @@ export default function App() {
         setIsPlaying(false);
     };
 
+    const goForward = () => {
+        setCurrentIndex(prev => Math.min(words.length - 1, prev + 10));
+        setIsPlaying(false);
+    };
+
     const resetReading = () => {
         setCurrentIndex(0);
         setIsPlaying(false);
@@ -255,8 +260,8 @@ export default function App() {
             </header>
 
             {/* Main Content Area - Everything Centered */}
-            <main className="flex-1 flex flex-col items-center justify-center p-6 space-y-12">
-                <div className="w-full flex flex-col items-center gap-10">
+            <main className="flex-1 flex flex-col items-center justify-center relative">
+                <div className="flex flex-col items-center gap-12 w-full">
                     {/* Word Display - Top */}
                     <WordDisplay
                         word={words[currentIndex]}
@@ -264,19 +269,19 @@ export default function App() {
                         disabled={words.length === 0}
                     />
 
-                    {/* WPM & Controls - Middle/Bottom */}
+                    {/* WPM & Controls - Middle */}
                     <Controls
                         isPlaying={isPlaying}
                         wpm={wpm}
                         adjustWpm={adjustWpm}
                         togglePlay={togglePlay}
                         goBack={goBack}
-                        resetReading={resetReading}
+                        goForward={goForward}
                         currentTheme={currentTheme}
                         disabled={words.length === 0}
                     />
 
-                    {/* Progress Bar - Very Bottom */}
+                    {/* Progress Bar - Bottom */}
                     <ProgressBar
                         progress={progress}
                         currentIndex={currentIndex}
