@@ -1,10 +1,133 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { themes } from './constants/themes';
 import ThemeSelector from './components/ThemeSelector';
 import FileUpload from './components/FileUpload';
 import WordDisplay from './components/WordDisplay';
 import Controls from './components/Controls';
 import ProgressBar from './components/ProgressBar';
+
+// Styling defined at one place (the Theme System) 
+// and applied "inline" through the application.
+const themes = {
+    blue: {
+        bg: 'bg-slate-950',
+        card: 'bg-slate-900',
+        border: 'border-slate-800',
+        text: 'text-slate-50',
+        textSecondary: 'text-slate-200',
+        textMuted: 'text-slate-500',
+        accent: 'text-blue-400',
+        accentHover: 'hover:text-blue-300',
+        button: 'bg-slate-800 hover:bg-slate-700',
+        buttonIcon: 'text-blue-400',
+        primary: 'bg-blue-700 hover:bg-blue-600',
+        primaryShadow: 'shadow-blue-900/40',
+        progressBg: 'bg-slate-800',
+        progressFill: 'bg-blue-600',
+        arrow: 'border-t-blue-500',
+    },
+    purple: {
+        bg: 'bg-slate-950',
+        card: 'bg-slate-900',
+        border: 'border-slate-800',
+        text: 'text-slate-50',
+        textSecondary: 'text-slate-200',
+        textMuted: 'text-slate-500',
+        accent: 'text-purple-400',
+        accentHover: 'hover:text-purple-300',
+        button: 'bg-slate-800 hover:bg-slate-700',
+        buttonIcon: 'text-purple-400',
+        primary: 'bg-purple-700 hover:bg-purple-600',
+        primaryShadow: 'shadow-purple-900/40',
+        progressBg: 'bg-slate-800',
+        progressFill: 'bg-purple-600',
+        arrow: 'border-t-purple-500',
+    },
+    green: {
+        bg: 'bg-slate-950',
+        card: 'bg-slate-900',
+        border: 'border-slate-800',
+        text: 'text-slate-50',
+        textSecondary: 'text-slate-200',
+        textMuted: 'text-slate-500',
+        accent: 'text-emerald-400',
+        accentHover: 'hover:text-emerald-300',
+        button: 'bg-slate-800 hover:bg-slate-700',
+        buttonIcon: 'text-emerald-400',
+        primary: 'bg-emerald-700 hover:bg-emerald-600',
+        primaryShadow: 'shadow-emerald-900/40',
+        progressBg: 'bg-slate-800',
+        progressFill: 'bg-emerald-600',
+        arrow: 'border-t-emerald-500',
+    },
+    orange: {
+        bg: 'bg-slate-950',
+        card: 'bg-slate-900',
+        border: 'border-slate-800',
+        text: 'text-slate-50',
+        textSecondary: 'text-slate-200',
+        textMuted: 'text-slate-500',
+        accent: 'text-orange-400',
+        accentHover: 'hover:text-orange-300',
+        button: 'bg-slate-800 hover:bg-slate-700',
+        buttonIcon: 'text-orange-400',
+        primary: 'bg-orange-700 hover:bg-orange-600',
+        primaryShadow: 'shadow-orange-900/40',
+        progressBg: 'bg-slate-800',
+        progressFill: 'bg-orange-600',
+        arrow: 'border-t-orange-500',
+    },
+    rose: {
+        bg: 'bg-slate-950',
+        card: 'bg-slate-900',
+        border: 'border-slate-800',
+        text: 'text-slate-50',
+        textSecondary: 'text-slate-200',
+        textMuted: 'text-slate-500',
+        accent: 'text-rose-400',
+        accentHover: 'hover:text-rose-300',
+        button: 'bg-slate-800 hover:bg-slate-700',
+        buttonIcon: 'text-rose-400',
+        primary: 'bg-rose-700 hover:bg-rose-600',
+        primaryShadow: 'shadow-rose-900/40',
+        progressBg: 'bg-slate-800',
+        progressFill: 'bg-rose-600',
+        arrow: 'border-t-rose-500',
+    },
+    grey: {
+        bg: 'bg-neutral-900',
+        card: 'bg-neutral-800',
+        border: 'border-neutral-700',
+        text: 'text-neutral-100',
+        textSecondary: 'text-neutral-200',
+        textMuted: 'text-neutral-500',
+        accent: 'text-neutral-400',
+        accentHover: 'hover:text-neutral-300',
+        button: 'bg-neutral-700 hover:bg-neutral-600',
+        buttonIcon: 'text-neutral-300',
+        primary: 'bg-neutral-600 hover:bg-neutral-500',
+        primaryShadow: 'shadow-neutral-900/40',
+        progressBg: 'bg-neutral-700',
+        progressFill: 'bg-neutral-500',
+        arrow: 'border-t-neutral-400',
+    },
+    black: {
+        bg: 'bg-black',
+        card: 'bg-zinc-950',
+        border: 'border-zinc-900',
+        text: 'text-zinc-100',
+        textSecondary: 'text-zinc-200',
+        textMuted: 'text-zinc-600',
+        accent: 'text-zinc-400',
+        accentHover: 'hover:text-zinc-300',
+        button: 'bg-zinc-900 hover:bg-zinc-800',
+        buttonIcon: 'text-zinc-400',
+        primary: 'bg-zinc-700 hover:bg-zinc-600',
+        primaryShadow: 'shadow-black/60',
+        progressBg: 'bg-zinc-900',
+        progressFill: 'bg-zinc-600',
+        arrow: 'border-t-zinc-500',
+    },
+};
 
 export default function App() {
     const [text, setText] = useState('');
@@ -94,54 +217,73 @@ export default function App() {
     };
 
     return (
-        <div className={`min-h-screen w-full ${currentTheme.bg} flex flex-col p-8 transition-colors duration-500`}>
-            <ThemeSelector
-                currentTheme={currentTheme}
-                theme={theme}
-                isThemeOpen={isThemeOpen}
-                setIsThemeOpen={setIsThemeOpen}
-                handleThemeSelect={handleThemeSelect}
-            />
-
-            <div className="w-full max-w-3xl mx-auto flex-1 flex items-center">
-                <div className="w-full space-y-6">
+        <div className={`fixed inset-0 w-screen h-screen ${currentTheme.bg} flex flex-col transition-colors duration-500 overflow-hidden select-none`}>
+            {/* Header Bar */}
+            <header className={`w-full border-b ${currentTheme.border} ${currentTheme.card} px-8 py-4 flex items-center justify-between z-20 transition-all duration-300`}>
+                <div className="flex items-center gap-6">
+                    <h1 className={`text-xl font-black tracking-tighter ${currentTheme.text} flex items-center gap-2`}>
+                        <span className={currentTheme.accent}>RSVP</span>READER
+                    </h1>
+                    <div className={`h-6 w-[1px] ${currentTheme.progressBg} opacity-50`}></div>
                     <FileUpload
                         fileName={fileName}
                         currentTheme={currentTheme}
                         handleFileUpload={handleFileUpload}
+                        compact={true}
                     />
-
-                    {fileName && (
-                        <>
-                            <WordDisplay
-                                word={words[currentIndex]}
-                                currentTheme={currentTheme}
-                            />
-
-                            <Controls
-                                isPlaying={isPlaying}
-                                wpm={wpm}
-                                adjustWpm={adjustWpm}
-                                togglePlay={togglePlay}
-                                goBack={goBack}
-                                resetReading={resetReading}
-                                currentTheme={currentTheme}
-                                disabled={words.length === 0}
-                            />
-
-                            {words.length > 0 && (
-                                <ProgressBar
-                                    progress={progress}
-                                    currentIndex={currentIndex}
-                                    maxIndex={words.length - 1}
-                                    handleProgressChange={handleProgressChange}
-                                    currentTheme={currentTheme}
-                                />
-                            )}
-                        </>
-                    )}
                 </div>
-            </div>
+
+                <ThemeSelector
+                    currentTheme={currentTheme}
+                    theme={theme}
+                    isThemeOpen={isThemeOpen}
+                    setIsThemeOpen={setIsThemeOpen}
+                    handleThemeSelect={handleThemeSelect}
+                />
+            </header>
+
+            {/* Main Content Area - Everything Centered */}
+            <main className="flex-1 flex flex-col items-center justify-center p-6 space-y-12">
+                {!fileName ? (
+                    <FileUpload
+                        fileName={fileName}
+                        currentTheme={currentTheme}
+                        handleFileUpload={handleFileUpload}
+                        compact={false}
+                    />
+                ) : (
+                    <div className="w-full flex flex-col items-center gap-10">
+                        {/* Word Display - Top */}
+                        <WordDisplay
+                            word={words[currentIndex]}
+                            currentTheme={currentTheme}
+                        />
+
+                        {/* WPM & Controls - Middle/Bottom */}
+                        <Controls
+                            isPlaying={isPlaying}
+                            wpm={wpm}
+                            adjustWpm={adjustWpm}
+                            togglePlay={togglePlay}
+                            goBack={goBack}
+                            resetReading={resetReading}
+                            currentTheme={currentTheme}
+                            disabled={words.length === 0}
+                        />
+
+                        {/* Progress Bar - Very Bottom */}
+                        {words.length > 0 && (
+                            <ProgressBar
+                                progress={progress}
+                                currentIndex={currentIndex}
+                                maxIndex={words.length - 1}
+                                handleProgressChange={handleProgressChange}
+                                currentTheme={currentTheme}
+                            />
+                        )}
+                    </div>
+                )}
+            </main>
         </div>
     );
 }

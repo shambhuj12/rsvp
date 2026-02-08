@@ -2,9 +2,9 @@ import React from 'react';
 
 const WordDisplay = ({ word, currentTheme }) => {
     return (
-        <div className={`${currentTheme.card} rounded-2xl shadow-2xl p-16 flex items-center justify-center min-h-[300px] border ${currentTheme.border}`}>
-            <div className={`text-6xl font-light ${currentTheme.text} text-center break-words max-w-full`}>
-                {word || ''}
+        <div className={`w-full flex items-center justify-center p-10`}>
+            <div className={`text-5xl md:text-6xl font-bold tracking-tight ${currentTheme.text} text-center break-words max-w-full drop-shadow-sm select-none`}>
+                {word || '...'}
             </div>
         </div>
     );
