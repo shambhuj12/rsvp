@@ -141,16 +141,24 @@ export default function App() {
     const [isThemeOpen, setIsThemeOpen] = useState(false);
     const intervalRef = useRef(null);
     const resumeTimeoutRef = useRef(null);
+    const [introStarted, setIntroStarted] = useState(false);
 
     const introText = "RSVP stands for Rapid Serial Visual Presentation. It is a method of reading where words are displayed one by one in the same position. This helps you read faster by eliminating the time your eyes spend moving from word to word. Conventional reading is slower because your eyes have to scan the page. With RSVP, you can achieve much higher reading speeds. Upload a file to start your journey into faster reading! ";
 
     useEffect(() => {
-        if (words.length === 0) {
+        const timer = setTimeout(() => {
+            setIntroStarted(true);
+        }, 3000);
+        return () => clearTimeout(timer);
+    }, []);
+
+    useEffect(() => {
+        if (introStarted && words.length === 0 && !fileName) {
             const introWords = introText.split(/\s+/).filter(word => word.length > 0);
             setWords(introWords);
             setIsPlaying(true);
         }
-    }, []);
+    }, [introStarted, fileName, words.length]);
 
     const clearResumeTimeout = () => {
         if (resumeTimeoutRef.current) {
@@ -305,7 +313,7 @@ export default function App() {
                     {/* Word Display - Top */}
                     <div className="animate-slide-up">
                         <WordDisplay
-                            word={words[currentIndex]}
+                            word={(!introStarted && !fileName && words.length === 0) ? "RSVP" : words[currentIndex]}
                             currentTheme={currentTheme}
                             disabled={words.length === 0 && fileName}
                         />
