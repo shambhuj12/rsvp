@@ -4,6 +4,7 @@ import FileUpload from './components/FileUpload';
 import WordDisplay from './components/WordDisplay';
 import Controls from './components/Controls';
 import ProgressBar from './components/ProgressBar';
+import Footer from './components/Footer';
 
 // Styling defined at one place (the Theme System) 
 // and applied "inline" through the application.
@@ -334,6 +335,9 @@ export default function App() {
                     />
                 </div>
             </main>
+
+            {/* Footer - Bottom */}
+            <Footer currentTheme={currentTheme} />
         </div>
     );
 }
