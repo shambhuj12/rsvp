@@ -16,7 +16,7 @@ const Controls = ({
             {/* WPM Control - Top */}
             <div className="flex items-center gap-4">
                 <button
-                    onClick={() => adjustWpm(-50)}
+                    onClick={() => adjustWpm(-25)}
                     className={`p-1.5 rounded-lg ${currentTheme.button} transition-all active:scale-90`}
                     disabled={disabled}
                 >
@@ -29,7 +29,7 @@ const Controls = ({
                 </div>
 
                 <button
-                    onClick={() => adjustWpm(50)}
+                    onClick={() => adjustWpm(25)}
                     className={`p-1.5 rounded-lg ${currentTheme.button} transition-all active:scale-90`}
                     disabled={disabled}
                 >
