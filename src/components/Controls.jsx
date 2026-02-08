@@ -18,7 +18,7 @@ const Controls = ({
             <div className="flex items-center gap-4">
                 <button
                     onClick={() => adjustWpm(-25)}
-                    className={`p-1.5 rounded-lg ${currentTheme.button} transition-all active:scale-90`}
+                    className={`p-1.5 rounded-lg ${currentTheme.button} transition-all hover:scale-110 active:scale-90 hover:shadow`}
                     disabled={disabled && fileName}
                 >
                     <Minus className={`w-3.5 h-3.5 ${currentTheme.buttonIcon}`} />
@@ -31,7 +31,7 @@ const Controls = ({
 
                 <button
                     onClick={() => adjustWpm(25)}
-                    className={`p-1.5 rounded-lg ${currentTheme.button} transition-all active:scale-90`}
+                    className={`p-1.5 rounded-lg ${currentTheme.button} transition-all hover:scale-110 active:scale-90 hover:shadow`}
                     disabled={disabled && fileName}
                 >
                     <Plus className={`w-3.5 h-3.5 ${currentTheme.buttonIcon}`} />

@@ -276,7 +276,7 @@ export default function App() {
     return (
         <div className={`fixed inset-0 w-screen h-screen ${currentTheme.bg} flex flex-col transition-colors duration-500 overflow-hidden select-none`}>
             {/* Header Bar */}
-            <header className={`w-full border-b ${currentTheme.border} ${currentTheme.card} px-8 py-4 flex items-center justify-between z-20 transition-all duration-300`}>
+            <header className={`w-full border-b ${currentTheme.border} ${currentTheme.card} px-8 py-4 flex items-center justify-between z-20 transition-all duration-300 animate-slide-down`}>
                 <div className="flex items-center gap-6">
                     <h1 className={`text-xl font-black tracking-tighter ${currentTheme.text} flex items-center gap-2`}>
                         <span className={currentTheme.accent}>RSVP</span>READER
@@ -300,44 +300,52 @@ export default function App() {
             </header>
 
             {/* Main Content Area - Everything Centered */}
-            <main className="flex-1 flex flex-col items-center justify-center relative">
-                <div className="flex flex-col items-center gap-12 w-full">
+            <main className="flex-1 flex flex-col items-center justify-center relative w-full max-w-4xl mx-auto px-4">
+                <div className="flex flex-col items-center gap-12 w-full animate-fade-in">
                     {/* Word Display - Top */}
-                    <WordDisplay
-                        word={words[currentIndex]}
-                        currentTheme={currentTheme}
-                        disabled={words.length === 0 && fileName}
-                    />
+                    <div className="animate-slide-up">
+                        <WordDisplay
+                            word={words[currentIndex]}
+                            currentTheme={currentTheme}
+                            disabled={words.length === 0 && fileName}
+                        />
+                    </div>
 
                     {/* WPM & Controls - Middle */}
-                    <Controls
-                        isPlaying={isPlaying}
-                        wpm={wpm}
-                        adjustWpm={adjustWpm}
-                        togglePlay={togglePlay}
-                        goBack={goBack}
-                        goForward={goForward}
-                        currentTheme={currentTheme}
-                        disabled={words.length === 0 && fileName}
-                        fileName={fileName}
-                    />
+                    <div className="animate-slide-up animation-delay-100">
+                        <Controls
+                            isPlaying={isPlaying}
+                            wpm={wpm}
+                            adjustWpm={adjustWpm}
+                            togglePlay={togglePlay}
+                            goBack={goBack}
+                            goForward={goForward}
+                            currentTheme={currentTheme}
+                            disabled={words.length === 0 && fileName}
+                            fileName={fileName}
+                        />
+                    </div>
 
                     {/* Progress Bar - Bottom */}
-                    <ProgressBar
-                        progress={progress}
-                        currentIndex={currentIndex}
-                        maxIndex={Math.max(0, words.length - 1)}
-                        handleProgressChange={handleProgressChange}
-                        handleSeekStart={handleSeekStart}
-                        handleSeekEnd={handleSeekEnd}
-                        currentTheme={currentTheme}
-                        disabled={words.length === 0 && fileName}
-                    />
+                    <div className="w-full max-w-2xl animate-slide-up animation-delay-200">
+                        <ProgressBar
+                            progress={progress}
+                            currentIndex={currentIndex}
+                            maxIndex={Math.max(0, words.length - 1)}
+                            handleProgressChange={handleProgressChange}
+                            handleSeekStart={handleSeekStart}
+                            handleSeekEnd={handleSeekEnd}
+                            currentTheme={currentTheme}
+                            disabled={words.length === 0 && fileName}
+                        />
+                    </div>
                 </div>
             </main>
 
             {/* Footer - Bottom */}
-            <Footer currentTheme={currentTheme} />
+            <div className="animate-slide-up animation-delay-300 w-full z-10">
+                <Footer currentTheme={currentTheme} />
+            </div>
         </div>
     );
 }
