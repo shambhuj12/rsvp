@@ -1,18 +1,7 @@
-import React, { useState } from 'react';
-import { Mail, Copy, Check } from 'lucide-react';
+import React from 'react';
+import { Github } from 'lucide-react';
 
 const Footer = ({ currentTheme }) => {
-    const [copied, setCopied] = useState(false);
-    const email = "shambhujagtapcoc@gmail.com";
-
-    const copyToClipboard = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        navigator.clipboard.writeText(email);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-    };
-
     return (
         <footer className={`w-full py-4 px-8 border-t ${currentTheme.border} ${currentTheme.card} transition-all duration-300`}>
             <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
@@ -38,27 +27,20 @@ const Footer = ({ currentTheme }) => {
                     </a>
                 </div>
 
-                {/* Feedback Section */}
+                {/* Collaboration Section */}
                 <div className="flex items-center gap-3">
-                    <div className={`text-xs font-semibold ${currentTheme.textSecondary}`}>
-                        {email}
-                    </div>
-                    <button
-                        onClick={copyToClipboard}
-                        className={`p-1.5 rounded-md hover:bg-white/5 transition-colors relative group`}
-                        title="Copy email"
+                    <span className={`text-xs ${currentTheme.textMuted}`}>
+                        Want to contribute?
+                    </span>
+                    <a
+                        href="https://github.com/shambhuj12/rsvp"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`group flex items-center gap-2 text-xs font-bold ${currentTheme.textSecondary} ${currentTheme.accentHover} bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-full transition-all border border-transparent ${currentTheme.accentHover.replace('text', 'border')}`}
                     >
-                        {copied ? (
-                            <Check className="w-3 h-3 text-emerald-500" />
-                        ) : (
-                            <Copy className={`w-3 h-3 ${currentTheme.textMuted} group-hover:text-white transition-colors`} />
-                        )}
-                        {copied && (
-                            <span className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-emerald-500 text-[10px] text-white rounded shadow-lg animate-bounce whitespace-nowrap">
-                                Copied!
-                            </span>
-                        )}
-                    </button>
+                        <Github className="w-3.5 h-3.5" />
+                        Collab & Add Features
+                    </a>
                 </div>
             </div>
         </footer>
