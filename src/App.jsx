@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Focus, Minimize } from 'lucide-react';
 import ThemeSelector from './components/ThemeSelector';
 import FileUpload from './components/FileUpload';
 import WordDisplay from './components/WordDisplay';
 import Controls from './components/Controls';
 import ProgressBar from './components/ProgressBar';
 import Footer from './components/Footer';
+import Tooltip from './components/Tooltip';
 
 // Styling defined at one place (the Theme System) 
 // and applied "inline" through the application.
@@ -139,6 +141,7 @@ export default function App() {
     const [fileName, setFileName] = useState('');
     const [theme, setTheme] = useState('grey');
     const [isThemeOpen, setIsThemeOpen] = useState(false);
+    const [isFocusMode, setIsFocusMode] = useState(false);
     const intervalRef = useRef(null);
     const resumeTimeoutRef = useRef(null);
     const [introStarted, setIntroStarted] = useState(false);
@@ -299,28 +302,48 @@ export default function App() {
     return (
         <div className={`fixed inset-0 w-screen h-screen ${currentTheme.bg} flex flex-col transition-colors duration-500 overflow-hidden select-none`}>
             {/* Header Bar */}
-            <header className={`w-full border-b ${currentTheme.border} ${currentTheme.card} px-8 py-4 flex items-center justify-between z-20 transition-all duration-300 animate-slide-down`}>
-                <div className="flex items-center gap-6">
+            <header className={`w-full border-b ${isFocusMode ? 'border-transparent bg-transparent' : `${currentTheme.border} ${currentTheme.card}`} px-8 py-4 flex items-center justify-between z-20 transition-all duration-500 animate-slide-down`}>
+                <div className={`flex items-center gap-6 transition-opacity duration-500 ${isFocusMode ? 'opacity-20 hover:opacity-100' : 'opacity-100'}`}>
                     <h1 className={`text-xl font-black tracking-tighter ${currentTheme.text} flex items-center gap-2`}>
                         <span className={currentTheme.accent}>RSVP</span>READER
                     </h1>
-                    <div className={`h-6 w-[1px] ${currentTheme.progressBg} opacity-50`}></div>
-                    <FileUpload
-                        fileName={fileName}
-                        currentTheme={currentTheme}
-                        handleFileUpload={handleFileUpload}
-                        loadSample={loadSample}
-                        compact={true}
-                    />
+                    {!isFocusMode && (
+                        <>
+                            <div className={`h-6 w-[1px] ${currentTheme.progressBg} opacity-50`}></div>
+                            <FileUpload
+                                fileName={fileName}
+                                currentTheme={currentTheme}
+                                handleFileUpload={handleFileUpload}
+                                loadSample={loadSample}
+                                compact={true}
+                            />
+                        </>
+                    )}
                 </div>
 
-                <ThemeSelector
-                    currentTheme={currentTheme}
-                    theme={theme}
-                    isThemeOpen={isThemeOpen}
-                    setIsThemeOpen={setIsThemeOpen}
-                    handleThemeSelect={handleThemeSelect}
-                />
+                <div className="flex items-center gap-4">
+                    <Tooltip text={isFocusMode ? "Exit Focus Mode" : "Enter Focus Mode"} currentTheme={currentTheme} position="bottom">
+                        <button
+                            onClick={() => setIsFocusMode(!isFocusMode)}
+                            className={`flex items-center gap-2 px-3 py-1.5 rounded-full font-bold text-xs transition-all ${isFocusMode
+                                ? `${currentTheme.accent} bg-white/5 hover:bg-white/10 ring-1 ring-white/20`
+                                : `${currentTheme.textSecondary} hover:${currentTheme.text} hover:bg-white/5`}`}
+                        >
+                            {isFocusMode ? <Minimize className="w-4 h-4" /> : <Focus className="w-4 h-4" />}
+                            {isFocusMode ? 'EXIT FOCUS' : 'FOCUS MODE'}
+                        </button>
+                    </Tooltip>
+
+                    {!isFocusMode && (
+                        <ThemeSelector
+                            currentTheme={currentTheme}
+                            theme={theme}
+                            isThemeOpen={isThemeOpen}
+                            setIsThemeOpen={setIsThemeOpen}
+                            handleThemeSelect={handleThemeSelect}
+                        />
+                    )}
+                </div>
             </header>
 
             {/* Main Content Area - Everything Centered */}
@@ -332,43 +355,50 @@ export default function App() {
                             word={(!introStarted && !fileName && words.length === 0) ? "RSVP" : words[currentIndex]}
                             currentTheme={currentTheme}
                             disabled={words.length === 0 && fileName}
+                            isFocusMode={isFocusMode}
                         />
                     </div>
 
-                    {/* WPM & Controls - Middle */}
-                    <div className="animate-slide-up animation-delay-100">
-                        <Controls
-                            isPlaying={isPlaying}
-                            wpm={wpm}
-                            adjustWpm={adjustWpm}
-                            togglePlay={togglePlay}
-                            goBack={goBack}
-                            goForward={goForward}
-                            currentTheme={currentTheme}
-                            disabled={words.length === 0 && fileName}
-                            fileName={fileName}
-                        />
+                    {/* WPM & Controls - Middle - Hidden in Focus Mode */}
+                    <div className={`transition-all duration-500 ${isFocusMode ? 'opacity-0 translate-y-10 pointer-events-none' : 'opacity-100'}`}>
+                        <div className="animate-slide-up animation-delay-100">
+                            <Controls
+                                isPlaying={isPlaying}
+                                wpm={wpm}
+                                adjustWpm={adjustWpm}
+                                togglePlay={togglePlay}
+                                goBack={goBack}
+                                goForward={goForward}
+                                currentTheme={currentTheme}
+                                disabled={words.length === 0 && fileName}
+                                fileName={fileName}
+                            />
+                        </div>
                     </div>
 
-                    {/* Progress Bar - Bottom */}
-                    <div className="w-full max-w-2xl animate-slide-up animation-delay-200">
-                        <ProgressBar
-                            progress={progress}
-                            currentIndex={currentIndex}
-                            maxIndex={Math.max(0, words.length - 1)}
-                            handleProgressChange={handleProgressChange}
-                            handleSeekStart={handleSeekStart}
-                            handleSeekEnd={handleSeekEnd}
-                            currentTheme={currentTheme}
-                            disabled={words.length === 0 && fileName}
-                        />
+                    {/* Progress Bar - Bottom - Hidden in Focus Mode */}
+                    <div className={`w-full max-w-2xl transition-all duration-500 ${isFocusMode ? 'opacity-0 translate-y-10 pointer-events-none' : 'opacity-100'}`}>
+                        <div className="animate-slide-up animation-delay-200">
+                            <ProgressBar
+                                progress={progress}
+                                currentIndex={currentIndex}
+                                maxIndex={Math.max(0, words.length - 1)}
+                                handleProgressChange={handleProgressChange}
+                                handleSeekStart={handleSeekStart}
+                                handleSeekEnd={handleSeekEnd}
+                                currentTheme={currentTheme}
+                                disabled={words.length === 0 && fileName}
+                            />
+                        </div>
                     </div>
                 </div>
             </main>
 
-            {/* Footer - Bottom */}
-            <div className="animate-slide-up animation-delay-300 w-full z-10">
-                <Footer currentTheme={currentTheme} />
+            {/* Footer - Bottom - Hidden in Focus Mode */}
+            <div className={`w-full z-10 transition-all duration-500 ${isFocusMode ? 'opacity-0 translate-y-full pointer-events-none' : 'opacity-100'}`}>
+                <div className="animate-slide-up animation-delay-300">
+                    <Footer currentTheme={currentTheme} />
+                </div>
             </div>
         </div>
     );
