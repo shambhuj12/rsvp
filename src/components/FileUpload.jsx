@@ -1,7 +1,7 @@
 import React from 'react';
-import { Upload } from 'lucide-react';
+import { Upload, FileText } from 'lucide-react';
 
-const FileUpload = ({ fileName, currentTheme, handleFileUpload, compact = true }) => {
+const FileUpload = ({ fileName, currentTheme, handleFileUpload, loadSample, compact = true }) => {
     if (fileName) {
         return (
             <div className="flex items-center gap-3">
@@ -21,16 +21,26 @@ const FileUpload = ({ fileName, currentTheme, handleFileUpload, compact = true }
     }
 
     return (
-        <label className={`text-sm ${currentTheme.accent} hover:scale-105 active:scale-95 hover:shadow-lg cursor-pointer flex items-center gap-2.5 transition-all font-black bg-white/5 px-4 py-2 rounded-xl border-2 border-dashed ${currentTheme.border} hover:border-white/20`}>
-            <Upload className="w-4 h-4 stroke-[3]" />
-            UPLOAD TEXT FILE
-            <input
-                type="file"
-                accept=".txt"
-                onChange={handleFileUpload}
-                className="hidden"
-            />
-        </label>
+        <div className="flex items-center gap-3">
+            <button
+                onClick={loadSample}
+                className={`text-sm ${currentTheme.textMuted} hover:${currentTheme.text} hover:scale-105 active:scale-95 cursor-pointer flex items-center gap-2 transition-all font-bold px-3 py-2 rounded-xl hover:bg-white/5`}
+            >
+                <FileText className="w-4 h-4" />
+                USE SAMPLE
+            </button>
+            <div className={`h-6 w-[1px] ${currentTheme.border}`}></div>
+            <label className={`text-sm ${currentTheme.accent} hover:scale-105 active:scale-95 hover:shadow-lg cursor-pointer flex items-center gap-2.5 transition-all font-black bg-white/5 px-4 py-2 rounded-xl border-2 border-dashed ${currentTheme.border} hover:border-white/20`}>
+                <Upload className="w-4 h-4 stroke-[3]" />
+                UPLOAD TEXT FILE
+                <input
+                    type="file"
+                    accept=".txt"
+                    onChange={handleFileUpload}
+                    className="hidden"
+                />
+            </label>
+        </div>
     );
 };
 

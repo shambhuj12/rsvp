@@ -185,6 +185,21 @@ export default function App() {
         }
     };
 
+    const loadSample = async () => {
+        try {
+            const response = await fetch('/sample.txt');
+            const text = await response.text();
+            setText(text);
+            const wordArray = text.split(/\s+/).filter(word => word.length > 0);
+            setWords(wordArray);
+            setFileName('Sample Text');
+            setCurrentIndex(0);
+            setIsPlaying(false);
+        } catch (error) {
+            console.error("Failed to load sample text:", error);
+        }
+    };
+
     useEffect(() => {
         if (isPlaying && currentIndex < words.length) {
             const interval = 60000 / wpm;
@@ -294,6 +309,7 @@ export default function App() {
                         fileName={fileName}
                         currentTheme={currentTheme}
                         handleFileUpload={handleFileUpload}
+                        loadSample={loadSample}
                         compact={true}
                     />
                 </div>
