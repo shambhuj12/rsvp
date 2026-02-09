@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Minus, Plus } from 'lucide-react';
+import Tooltip from './Tooltip';
 
 const WordDisplay = ({ word, currentTheme, disabled }) => {
     const [fontSize, setFontSize] = useState(60);
@@ -22,25 +23,27 @@ const WordDisplay = ({ word, currentTheme, disabled }) => {
             </div>
 
             <div className={`flex items-center gap-6 mt-8 p-1.5 rounded-2xl border ${currentTheme.border} ${currentTheme.card} shadow-sm bg-opacity-30 backdrop-blur-sm`}>
-                <button
-                    onClick={decreaseSize}
-                    disabled={disabled || fontSize <= 20}
-                    className={`w-10 h-10 flex items-center justify-center rounded-xl hover:bg-white/5 transition-all ${currentTheme.text} disabled:opacity-30 disabled:hover:bg-transparent font-bold text-sm select-none active:scale-95`}
-                    title="Decrease font size"
-                >
-                    A
-                </button>
+                <Tooltip text="Smaller Text" currentTheme={currentTheme}>
+                    <button
+                        onClick={decreaseSize}
+                        disabled={disabled || fontSize <= 20}
+                        className={`w-10 h-10 flex items-center justify-center rounded-xl hover:bg-white/5 transition-all ${currentTheme.text} disabled:opacity-30 disabled:hover:bg-transparent font-bold text-sm select-none active:scale-95`}
+                    >
+                        A
+                    </button>
+                </Tooltip>
 
                 <div className={`w-[1px] h-4 ${currentTheme.border}`}></div>
 
-                <button
-                    onClick={increaseSize}
-                    disabled={disabled || fontSize >= 120}
-                    className={`w-10 h-10 flex items-center justify-center rounded-xl hover:bg-white/5 transition-all ${currentTheme.text} disabled:opacity-30 disabled:hover:bg-transparent font-bold text-xl select-none active:scale-95`}
-                    title="Increase font size"
-                >
-                    A
-                </button>
+                <Tooltip text="Larger Text" currentTheme={currentTheme}>
+                    <button
+                        onClick={increaseSize}
+                        disabled={disabled || fontSize >= 120}
+                        className={`w-10 h-10 flex items-center justify-center rounded-xl hover:bg-white/5 transition-all ${currentTheme.text} disabled:opacity-30 disabled:hover:bg-transparent font-bold text-xl select-none active:scale-95`}
+                    >
+                        A
+                    </button>
+                </Tooltip>
             </div>
         </div>
     );
