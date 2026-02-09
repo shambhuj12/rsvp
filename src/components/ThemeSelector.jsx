@@ -1,45 +1,42 @@
 import React from 'react';
 
 const ThemeSelector = ({ currentTheme, theme, isThemeOpen, setIsThemeOpen, handleThemeSelect }) => {
+    const themeColors = {
+        blue: 'bg-blue-500',
+        purple: 'bg-purple-500',
+        green: 'bg-emerald-500',
+        orange: 'bg-orange-500',
+        rose: 'bg-rose-500',
+        grey: 'bg-neutral-500',
+        black: 'bg-zinc-950 border border-zinc-700'
+    };
+
     return (
         <div className="relative">
             <button
                 onClick={() => setIsThemeOpen(!isThemeOpen)}
-                className={`${currentTheme.card} border ${currentTheme.border} rounded-xl px-4 py-2 flex items-center gap-2 ${currentTheme.text} hover:scale-105 transition-all shadow-lg active:scale-95`}
+                className={`${currentTheme.card} border ${currentTheme.border} rounded-full p-2 flex items-center justify-center hover:scale-110 transition-all shadow-lg active:scale-95`}
+                title="Change Theme"
             >
-                <div className={`w-3 h-3 rounded-full ${theme === 'blue' ? 'bg-blue-500' :
-                    theme === 'purple' ? 'bg-purple-500' :
-                        theme === 'green' ? 'bg-emerald-500' :
-                            theme === 'orange' ? 'bg-orange-500' :
-                                theme === 'rose' ? 'bg-rose-500' :
-                                    theme === 'grey' ? 'bg-neutral-500' :
-                                        'bg-zinc-500'
-                    }`} />
-                <span className="text-sm font-medium capitalize">{theme}</span>
-                <svg className={`w-4 h-4 transition-transform duration-300 ${isThemeOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
+                <div className={`w-5 h-5 rounded-full ${themeColors[theme] || 'bg-slate-500'} shadow-sm`} />
             </button>
 
             {isThemeOpen && (
-                <div className={`absolute right-0 mt-3 w-48 ${currentTheme.card} border ${currentTheme.border} rounded-2xl shadow-2xl overflow-hidden z-50 backdrop-blur-md bg-opacity-80 p-1 animate-scale-in origin-top-right`}>
-                    {['blue', 'purple', 'green', 'orange', 'rose', 'grey', 'black'].map((t) => (
-                        <button
-                            key={t}
-                            onClick={() => handleThemeSelect(t)}
-                            className={`w-full px-4 py-3 flex items-center gap-3 hover:bg-white/10 rounded-xl transition-all ${theme === t ? 'bg-white/5' : ''}`}
-                        >
-                            <div className={`w-4 h-4 rounded-full ${t === 'blue' ? 'bg-blue-500' :
-                                t === 'purple' ? 'bg-purple-500' :
-                                    t === 'green' ? 'bg-emerald-500' :
-                                        t === 'orange' ? 'bg-orange-500' :
-                                            t === 'rose' ? 'bg-rose-500' :
-                                                t === 'grey' ? 'bg-neutral-500' :
-                                                    'bg-zinc-600 border border-zinc-500'
-                                }`} />
-                            <span className={`text-sm tracking-wide ${currentTheme.text} capitalize`}>{t}</span>
-                        </button>
-                    ))}
+                <div className={`absolute right-0 mt-3 p-3 ${currentTheme.card} border ${currentTheme.border} rounded-2xl shadow-2xl z-50 backdrop-blur-md bg-opacity-95 animate-scale-in origin-top-right min-w-[180px]`}>
+                    <div className="grid grid-cols-4 gap-3">
+                        {Object.entries(themeColors).map(([t, colorClass]) => (
+                            <button
+                                key={t}
+                                onClick={() => handleThemeSelect(t)}
+                                className={`w-8 h-8 rounded-full ${colorClass} transition-all hover:scale-110 hover:shadow-lg flex items-center justify-center ${theme === t ? 'ring-2 ring-white ring-offset-2 ring-offset-black/50 scale-110' : ''}`}
+                                title={t.charAt(0).toUpperCase() + t.slice(1)}
+                            >
+                                {theme === t && (
+                                    <div className="w-2 h-2 bg-white rounded-full shadow-sm" />
+                                )}
+                            </button>
+                        ))}
+                    </div>
                 </div>
             )}
         </div>
