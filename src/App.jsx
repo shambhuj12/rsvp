@@ -187,7 +187,7 @@ export default function App() {
 
     const loadSample = async () => {
         try {
-            const response = await fetch('/sample.txt');
+            const response = await fetch(`${import.meta.env.BASE_URL}sample.txt`);
             const text = await response.text();
             setText(text);
             const wordArray = text.split(/\s+/).filter(word => word.length > 0);
