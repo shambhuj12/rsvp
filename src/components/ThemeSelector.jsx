@@ -22,8 +22,8 @@ const ThemeSelector = ({ currentTheme, theme, isThemeOpen, setIsThemeOpen, handl
             </button>
 
             {isThemeOpen && (
-                <div className={`absolute right-0 mt-3 p-3 ${currentTheme.card} border ${currentTheme.border} rounded-2xl shadow-2xl z-50 backdrop-blur-md bg-opacity-95 animate-scale-in origin-top-right min-w-[180px]`}>
-                    <div className="grid grid-cols-4 gap-3">
+                <div className={`absolute right-0 mt-3 p-2 ${currentTheme.card} border ${currentTheme.border} rounded-2xl shadow-2xl z-50 backdrop-blur-md bg-opacity-95 animate-scale-in origin-top-right`}>
+                    <div className="flex flex-col gap-3">
                         {Object.entries(themeColors).map(([t, colorClass]) => (
                             <button
                                 key={t}
