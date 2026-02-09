@@ -142,9 +142,18 @@ export default function App() {
     const [theme, setTheme] = useState('grey');
     const [isThemeOpen, setIsThemeOpen] = useState(false);
     const [isFocusMode, setIsFocusMode] = useState(false);
+    const [fontSize, setFontSize] = useState(60);
     const intervalRef = useRef(null);
     const resumeTimeoutRef = useRef(null);
     const [introStarted, setIntroStarted] = useState(false);
+
+    const increaseFontSize = () => {
+        setFontSize(prev => Math.min(prev + 5, 120));
+    };
+
+    const decreaseFontSize = () => {
+        setFontSize(prev => Math.max(prev - 5, 20));
+    };
 
     const introText = "RSVP stands for Rapid Serial Visual Presentation. It is a method of reading where words are displayed one by one in the same position. This helps you read faster by eliminating the time your eyes spend moving from word to word. Conventional reading is slower because your eyes have to scan the page. With RSVP, you can achieve much higher reading speeds. Upload a file to start your journey into faster reading! ";
 
@@ -356,6 +365,7 @@ export default function App() {
                             currentTheme={currentTheme}
                             disabled={words.length === 0 && fileName}
                             isFocusMode={isFocusMode}
+                            fontSize={fontSize}
                         />
                     </div>
 
@@ -372,6 +382,9 @@ export default function App() {
                                 currentTheme={currentTheme}
                                 disabled={words.length === 0 && fileName}
                                 fileName={fileName}
+                                fontSize={fontSize}
+                                increaseFontSize={increaseFontSize}
+                                decreaseFontSize={decreaseFontSize}
                             />
                         </div>
                     </div>
